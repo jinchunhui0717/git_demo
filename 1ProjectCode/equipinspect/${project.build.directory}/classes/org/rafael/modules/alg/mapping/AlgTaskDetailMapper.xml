@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.alg.dao.AlgTaskDetailDao">
+  <resultMap id="BaseResultMap" type="org.rafael.modules.alg.entity.AlgTaskDetail">
+    <id column="id" jdbcType="NVARCHAR" property="id" />
+    <result column="task_id" jdbcType="NVARCHAR" property="taskId" />
+    <result column="equip_id" jdbcType="NVARCHAR" property="equipId" />
+    <result column="equip_state" jdbcType="NCHAR" property="equipState" />
+    <result column="operator" jdbcType="NVARCHAR" property="operator" />
+    <result column="create_by" jdbcType="NVARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="NVARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="opt_startdate" jdbcType="DATE" property="optStartdate" />
+    <result column="opt_enddate" jdbcType="DATE" property="optEnddate" />
+    <result column="imageurl" jdbcType="NVARCHAR" property="imageurl" />
+    <result column="opt_date" jdbcType="TIMESTAMP" property="optDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, task_id, equip_id, equip_state, operator, create_by, create_date, update_by, 
+    update_date, opt_startdate, opt_enddate, imageurl, opt_date
+  </sql>
+  <select id="selectByExample" parameterType="org.rafael.modules.alg.entity.AlgTaskDetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dbo.alg_task_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dbo.alg_task_detail
+    where id = #{id,jdbcType=NVARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from dbo.alg_task_detail
+    where id = #{id,jdbcType=NVARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.rafael.modules.alg.entity.AlgTaskDetailExample">
+    delete from dbo.alg_task_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.rafael.modules.alg.entity.AlgTaskDetail">
+    insert into dbo.alg_task_detail (id, task_id, equip_id, 
+      equip_state, operator, create_by, 
+      create_date, update_by, update_date, 
+      opt_startdate, opt_enddate, imageurl, 
+      opt_date)
+    values (#{id,jdbcType=NVARCHAR}, #{taskId,jdbcType=NVARCHAR}, #{equipId,jdbcType=NVARCHAR}, 
+      #{equipState,jdbcType=NCHAR}, #{operator,jdbcType=NVARCHAR}, #{createBy,jdbcType=NVARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=NVARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{optStartdate,jdbcType=DATE}, #{optEnddate,jdbcType=DATE}, #{imageurl,jdbcType=NVARCHAR}, 
+      #{optDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.rafael.modules.alg.entity.AlgTaskDetail">
+    insert into dbo.alg_task_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="equipId != null">
+        equip_id,
+      </if>
+      <if test="equipState != null">
+        equip_state,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="optStartdate != null">
+        opt_startdate,
+      </if>
+      <if test="optEnddate != null">
+        opt_enddate,
+      </if>
+      <if test="imageurl != null">
+        imageurl,
+      </if>
+      <if test="optDate != null">
+        opt_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=NVARCHAR},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipId != null">
+        #{equipId,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipState != null">
+        #{equipState,jdbcType=NCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optStartdate != null">
+        #{optStartdate,jdbcType=DATE},
+      </if>
+      <if test="optEnddate != null">
+        #{optEnddate,jdbcType=DATE},
+      </if>
+      <if test="imageurl != null">
+        #{imageurl,jdbcType=NVARCHAR},
+      </if>
+      <if test="optDate != null">
+        #{optDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.rafael.modules.alg.entity.AlgTaskDetailExample" resultType="java.lang.Long">
+    select count(*) from dbo.alg_task_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dbo.alg_task_detail
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.taskId != null">
+        task_id = #{record.taskId,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.equipId != null">
+        equip_id = #{record.equipId,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.equipState != null">
+        equip_state = #{record.equipState,jdbcType=NCHAR},
+      </if>
+      <if test="record.operator != null">
+        operator = #{record.operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.updateDate != null">
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.optStartdate != null">
+        opt_startdate = #{record.optStartdate,jdbcType=DATE},
+      </if>
+      <if test="record.optEnddate != null">
+        opt_enddate = #{record.optEnddate,jdbcType=DATE},
+      </if>
+      <if test="record.imageurl != null">
+        imageurl = #{record.imageurl,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.optDate != null">
+        opt_date = #{record.optDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dbo.alg_task_detail
+    set id = #{record.id,jdbcType=NVARCHAR},
+      task_id = #{record.taskId,jdbcType=NVARCHAR},
+      equip_id = #{record.equipId,jdbcType=NVARCHAR},
+      equip_state = #{record.equipState,jdbcType=NCHAR},
+      operator = #{record.operator,jdbcType=NVARCHAR},
+      create_by = #{record.createBy,jdbcType=NVARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=NVARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      opt_startdate = #{record.optStartdate,jdbcType=DATE},
+      opt_enddate = #{record.optEnddate,jdbcType=DATE},
+      imageurl = #{record.imageurl,jdbcType=NVARCHAR},
+      opt_date = #{record.optDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.rafael.modules.alg.entity.AlgTaskDetail">
+    update dbo.alg_task_detail
+    <set>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipId != null">
+        equip_id = #{equipId,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipState != null">
+        equip_state = #{equipState,jdbcType=NCHAR},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=NVARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optStartdate != null">
+        opt_startdate = #{optStartdate,jdbcType=DATE},
+      </if>
+      <if test="optEnddate != null">
+        opt_enddate = #{optEnddate,jdbcType=DATE},
+      </if>
+      <if test="imageurl != null">
+        imageurl = #{imageurl,jdbcType=NVARCHAR},
+      </if>
+      <if test="optDate != null">
+        opt_date = #{optDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=NVARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.rafael.modules.alg.entity.AlgTaskDetail">
+    update dbo.alg_task_detail
+    set task_id = #{taskId,jdbcType=NVARCHAR},
+      equip_id = #{equipId,jdbcType=NVARCHAR},
+      equip_state = #{equipState,jdbcType=NCHAR},
+      operator = #{operator,jdbcType=NVARCHAR},
+      create_by = #{createBy,jdbcType=NVARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=NVARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      opt_startdate = #{optStartdate,jdbcType=DATE},
+      opt_enddate = #{optEnddate,jdbcType=DATE},
+      imageurl = #{imageurl,jdbcType=NVARCHAR},
+      opt_date = #{optDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=NVARCHAR}
+  </update>
+</mapper>

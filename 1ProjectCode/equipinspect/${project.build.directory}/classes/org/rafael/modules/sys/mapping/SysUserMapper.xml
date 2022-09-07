@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.sys.dao.SysUserDao">
+  <resultMap id="BaseResultMap" type="org.rafael.modules.sys.entity.SysUser">
+    <id column="id" jdbcType="NVARCHAR" property="id" />
+    <result column="company_id" jdbcType="NVARCHAR" property="companyId" />
+    <result column="office_id" jdbcType="NVARCHAR" property="officeId" />
+    <result column="login_name" jdbcType="NVARCHAR" property="loginName" />
+    <result column="password" jdbcType="NVARCHAR" property="password" />
+    <result column="salt" jdbcType="NVARCHAR" property="salt" />
+    <result column="no" jdbcType="NVARCHAR" property="no" />
+    <result column="name" jdbcType="NVARCHAR" property="name" />
+    <result column="email" jdbcType="NVARCHAR" property="email" />
+    <result column="phone" jdbcType="NVARCHAR" property="phone" />
+    <result column="mobile" jdbcType="NVARCHAR" property="mobile" />
+    <result column="photo" jdbcType="NVARCHAR" property="photo" />
+    <result column="login_ip" jdbcType="NVARCHAR" property="loginIp" />
+    <result column="login_date" jdbcType="TIMESTAMP" property="loginDate" />
+    <result column="login_locked" jdbcType="SMALLINT" property="loginLocked" />
+    <result column="create_by" jdbcType="NVARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="NVARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, company_id, office_id, login_name, password, salt, no, name, email, phone, mobile, 
+    photo, login_ip, login_date, login_locked, create_by, create_date, update_by, update_date
+  </sql>
+  <select id="selectByExample" parameterType="org.rafael.modules.sys.entity.SysUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dbo.sys_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dbo.sys_user
+    where id = #{id,jdbcType=NVARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from dbo.sys_user
+    where id = #{id,jdbcType=NVARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.rafael.modules.sys.entity.SysUserExample">
+    delete from dbo.sys_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.rafael.modules.sys.entity.SysUser">
+    insert into dbo.sys_user (id, company_id, office_id, 
+      login_name, password, salt, 
+      no, name, email, 
+      phone, mobile, photo, 
+      login_ip, login_date, login_locked, 
+      create_by, create_date, update_by, 
+      update_date)
+    values (#{id,jdbcType=NVARCHAR}, #{companyId,jdbcType=NVARCHAR}, #{officeId,jdbcType=NVARCHAR}, 
+      #{loginName,jdbcType=NVARCHAR}, #{password,jdbcType=NVARCHAR}, #{salt,jdbcType=NVARCHAR}, 
+      #{no,jdbcType=NVARCHAR}, #{name,jdbcType=NVARCHAR}, #{email,jdbcType=NVARCHAR}, 
+      #{phone,jdbcType=NVARCHAR}, #{mobile,jdbcType=NVARCHAR}, #{photo,jdbcType=NVARCHAR}, 
+      #{loginIp,jdbcType=NVARCHAR}, #{loginDate,jdbcType=TIMESTAMP}, #{loginLocked,jdbcType=SMALLINT}, 
+      #{createBy,jdbcType=NVARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=NVARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.rafael.modules.sys.entity.SysUser">
+    insert into dbo.sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="officeId != null">
+        office_id,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="no != null">
+        no,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="loginIp != null">
+        login_ip,
+      </if>
+      <if test="loginDate != null">
+        login_date,
+      </if>
+      <if test="loginLocked != null">
+        login_locked,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=NVARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=NVARCHAR},
+      </if>
+      <if test="officeId != null">
+        #{officeId,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=NVARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=NVARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=NVARCHAR},
+      </if>
+      <if test="no != null">
+        #{no,jdbcType=NVARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=NVARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=NVARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=NVARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginDate != null">
+        #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginLocked != null">
+        #{loginLocked,jdbcType=SMALLINT},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.rafael.modules.sys.entity.SysUserExample" resultType="java.lang.Long">
+    select count(*) from dbo.sys_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dbo.sys_user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.officeId != null">
+        office_id = #{record.officeId,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.loginName != null">
+        login_name = #{record.loginName,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.salt != null">
+        salt = #{record.salt,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.no != null">
+        no = #{record.no,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.photo != null">
+        photo = #{record.photo,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.loginIp != null">
+        login_ip = #{record.loginIp,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.loginDate != null">
+        login_date = #{record.loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginLocked != null">
+        login_locked = #{record.loginLocked,jdbcType=SMALLINT},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.updateDate != null">
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dbo.sys_user
+    set id = #{record.id,jdbcType=NVARCHAR},
+      company_id = #{record.companyId,jdbcType=NVARCHAR},
+      office_id = #{record.officeId,jdbcType=NVARCHAR},
+      login_name = #{record.loginName,jdbcType=NVARCHAR},
+      password = #{record.password,jdbcType=NVARCHAR},
+      salt = #{record.salt,jdbcType=NVARCHAR},
+      no = #{record.no,jdbcType=NVARCHAR},
+      name = #{record.name,jdbcType=NVARCHAR},
+      email = #{record.email,jdbcType=NVARCHAR},
+      phone = #{record.phone,jdbcType=NVARCHAR},
+      mobile = #{record.mobile,jdbcType=NVARCHAR},
+      photo = #{record.photo,jdbcType=NVARCHAR},
+      login_ip = #{record.loginIp,jdbcType=NVARCHAR},
+      login_date = #{record.loginDate,jdbcType=TIMESTAMP},
+      login_locked = #{record.loginLocked,jdbcType=SMALLINT},
+      create_by = #{record.createBy,jdbcType=NVARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=NVARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.rafael.modules.sys.entity.SysUser">
+    update dbo.sys_user
+    <set>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=NVARCHAR},
+      </if>
+      <if test="officeId != null">
+        office_id = #{officeId,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginName != null">
+        login_name = #{loginName,jdbcType=NVARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=NVARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=NVARCHAR},
+      </if>
+      <if test="no != null">
+        no = #{no,jdbcType=NVARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=NVARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=NVARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=NVARCHAR},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginIp != null">
+        login_ip = #{loginIp,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginDate != null">
+        login_date = #{loginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginLocked != null">
+        login_locked = #{loginLocked,jdbcType=SMALLINT},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=NVARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.rafael.modules.sys.entity.SysUser">
+    update dbo.sys_user
+    set company_id = #{companyId,jdbcType=NVARCHAR},
+      office_id = #{officeId,jdbcType=NVARCHAR},
+      login_name = #{loginName,jdbcType=NVARCHAR},
+      password = #{password,jdbcType=NVARCHAR},
+      salt = #{salt,jdbcType=NVARCHAR},
+      no = #{no,jdbcType=NVARCHAR},
+      name = #{name,jdbcType=NVARCHAR},
+      email = #{email,jdbcType=NVARCHAR},
+      phone = #{phone,jdbcType=NVARCHAR},
+      mobile = #{mobile,jdbcType=NVARCHAR},
+      photo = #{photo,jdbcType=NVARCHAR},
+      login_ip = #{loginIp,jdbcType=NVARCHAR},
+      login_date = #{loginDate,jdbcType=TIMESTAMP},
+      login_locked = #{loginLocked,jdbcType=SMALLINT},
+      create_by = #{createBy,jdbcType=NVARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=NVARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=NVARCHAR}
+  </update>
+</mapper>

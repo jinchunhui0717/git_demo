@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.alg.dao.AlgEquipDao">
+  <resultMap id="BaseResultMap" type="org.rafael.modules.alg.entity.AlgEquip">
+    <id column="id" jdbcType="NVARCHAR" property="id" />
+    <result column="code" jdbcType="NVARCHAR" property="code" />
+    <result column="name" jdbcType="NVARCHAR" property="name" />
+    <result column="barcode" jdbcType="NVARCHAR" property="barcode" />
+    <result column="image" jdbcType="NVARCHAR" property="image" />
+    <result column="type" jdbcType="NVARCHAR" property="type" />
+    <result column="posx" jdbcType="INTEGER" property="posx" />
+    <result column="posy" jdbcType="INTEGER" property="posy" />
+    <result column="pos_region" jdbcType="NVARCHAR" property="posRegion" />
+    <result column="create_by" jdbcType="NVARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="NVARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="alg_equip_office_id" jdbcType="NVARCHAR" property="algEquipOfficeId" />
+    <result column="equip_operator" jdbcType="NVARCHAR" property="equipOperator" />
+    <result column="equip_opt_startdate" jdbcType="INTEGER" property="equipOptStartdate" />
+    <result column="equip_opt_enddate" jdbcType="INTEGER" property="equipOptEnddate" />
+    <result column="extend1" jdbcType="NVARCHAR" property="extend1" />
+    <result column="extend2" jdbcType="NVARCHAR" property="extend2" />
+    <result column="extend3" jdbcType="NVARCHAR" property="extend3" />
+    <result column="extend4" jdbcType="NVARCHAR" property="extend4" />
+    <result column="extend5" jdbcType="NVARCHAR" property="extend5" />
+    <result column="extend6" jdbcType="NVARCHAR" property="extend6" />
+    <result column="extend7" jdbcType="NVARCHAR" property="extend7" />
+    <result column="extend8" jdbcType="NVARCHAR" property="extend8" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, code, name, barcode, image, type, posx, posy, pos_region, create_by, create_date, 
+    update_by, update_date, alg_equip_office_id, equip_operator, equip_opt_startdate, 
+    equip_opt_enddate, extend1, extend2, extend3, extend4, extend5, extend6, extend7, 
+    extend8
+  </sql>
+  <select id="selectByExample" parameterType="org.rafael.modules.alg.entity.AlgEquipExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dbo.alg_equip
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dbo.alg_equip
+    where id = #{id,jdbcType=NVARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from dbo.alg_equip
+    where id = #{id,jdbcType=NVARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.rafael.modules.alg.entity.AlgEquipExample">
+    delete from dbo.alg_equip
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.rafael.modules.alg.entity.AlgEquip">
+    insert into dbo.alg_equip (id, code, name, 
+      barcode, image, type, 
+      posx, posy, pos_region, 
+      create_by, create_date, update_by, 
+      update_date, alg_equip_office_id, equip_operator, 
+      equip_opt_startdate, equip_opt_enddate, extend1, 
+      extend2, extend3, extend4, 
+      extend5, extend6, extend7, 
+      extend8)
+    values (#{id,jdbcType=NVARCHAR}, #{code,jdbcType=NVARCHAR}, #{name,jdbcType=NVARCHAR}, 
+      #{barcode,jdbcType=NVARCHAR}, #{image,jdbcType=NVARCHAR}, #{type,jdbcType=NVARCHAR}, 
+      #{posx,jdbcType=INTEGER}, #{posy,jdbcType=INTEGER}, #{posRegion,jdbcType=NVARCHAR}, 
+      #{createBy,jdbcType=NVARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=NVARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{algEquipOfficeId,jdbcType=NVARCHAR}, #{equipOperator,jdbcType=NVARCHAR}, 
+      #{equipOptStartdate,jdbcType=INTEGER}, #{equipOptEnddate,jdbcType=INTEGER}, #{extend1,jdbcType=NVARCHAR}, 
+      #{extend2,jdbcType=NVARCHAR}, #{extend3,jdbcType=NVARCHAR}, #{extend4,jdbcType=NVARCHAR}, 
+      #{extend5,jdbcType=NVARCHAR}, #{extend6,jdbcType=NVARCHAR}, #{extend7,jdbcType=NVARCHAR}, 
+      #{extend8,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.rafael.modules.alg.entity.AlgEquip">
+    insert into dbo.alg_equip
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="barcode != null">
+        barcode,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="posx != null">
+        posx,
+      </if>
+      <if test="posy != null">
+        posy,
+      </if>
+      <if test="posRegion != null">
+        pos_region,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="algEquipOfficeId != null">
+        alg_equip_office_id,
+      </if>
+      <if test="equipOperator != null">
+        equip_operator,
+      </if>
+      <if test="equipOptStartdate != null">
+        equip_opt_startdate,
+      </if>
+      <if test="equipOptEnddate != null">
+        equip_opt_enddate,
+      </if>
+      <if test="extend1 != null">
+        extend1,
+      </if>
+      <if test="extend2 != null">
+        extend2,
+      </if>
+      <if test="extend3 != null">
+        extend3,
+      </if>
+      <if test="extend4 != null">
+        extend4,
+      </if>
+      <if test="extend5 != null">
+        extend5,
+      </if>
+      <if test="extend6 != null">
+        extend6,
+      </if>
+      <if test="extend7 != null">
+        extend7,
+      </if>
+      <if test="extend8 != null">
+        extend8,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=NVARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=NVARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="barcode != null">
+        #{barcode,jdbcType=NVARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=NVARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=NVARCHAR},
+      </if>
+      <if test="posx != null">
+        #{posx,jdbcType=INTEGER},
+      </if>
+      <if test="posy != null">
+        #{posy,jdbcType=INTEGER},
+      </if>
+      <if test="posRegion != null">
+        #{posRegion,jdbcType=NVARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="algEquipOfficeId != null">
+        #{algEquipOfficeId,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipOperator != null">
+        #{equipOperator,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipOptStartdate != null">
+        #{equipOptStartdate,jdbcType=INTEGER},
+      </if>
+      <if test="equipOptEnddate != null">
+        #{equipOptEnddate,jdbcType=INTEGER},
+      </if>
+      <if test="extend1 != null">
+        #{extend1,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend2 != null">
+        #{extend2,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend3 != null">
+        #{extend3,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend4 != null">
+        #{extend4,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend5 != null">
+        #{extend5,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend6 != null">
+        #{extend6,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend7 != null">
+        #{extend7,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend8 != null">
+        #{extend8,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.rafael.modules.alg.entity.AlgEquipExample" resultType="java.lang.Long">
+    select count(*) from dbo.alg_equip
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dbo.alg_equip
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.barcode != null">
+        barcode = #{record.barcode,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.posx != null">
+        posx = #{record.posx,jdbcType=INTEGER},
+      </if>
+      <if test="record.posy != null">
+        posy = #{record.posy,jdbcType=INTEGER},
+      </if>
+      <if test="record.posRegion != null">
+        pos_region = #{record.posRegion,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.updateDate != null">
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.algEquipOfficeId != null">
+        alg_equip_office_id = #{record.algEquipOfficeId,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.equipOperator != null">
+        equip_operator = #{record.equipOperator,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.equipOptStartdate != null">
+        equip_opt_startdate = #{record.equipOptStartdate,jdbcType=INTEGER},
+      </if>
+      <if test="record.equipOptEnddate != null">
+        equip_opt_enddate = #{record.equipOptEnddate,jdbcType=INTEGER},
+      </if>
+      <if test="record.extend1 != null">
+        extend1 = #{record.extend1,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.extend2 != null">
+        extend2 = #{record.extend2,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.extend3 != null">
+        extend3 = #{record.extend3,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.extend4 != null">
+        extend4 = #{record.extend4,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.extend5 != null">
+        extend5 = #{record.extend5,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.extend6 != null">
+        extend6 = #{record.extend6,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.extend7 != null">
+        extend7 = #{record.extend7,jdbcType=NVARCHAR},
+      </if>
+      <if test="record.extend8 != null">
+        extend8 = #{record.extend8,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dbo.alg_equip
+    set id = #{record.id,jdbcType=NVARCHAR},
+      code = #{record.code,jdbcType=NVARCHAR},
+      name = #{record.name,jdbcType=NVARCHAR},
+      barcode = #{record.barcode,jdbcType=NVARCHAR},
+      image = #{record.image,jdbcType=NVARCHAR},
+      type = #{record.type,jdbcType=NVARCHAR},
+      posx = #{record.posx,jdbcType=INTEGER},
+      posy = #{record.posy,jdbcType=INTEGER},
+      pos_region = #{record.posRegion,jdbcType=NVARCHAR},
+      create_by = #{record.createBy,jdbcType=NVARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=NVARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      alg_equip_office_id = #{record.algEquipOfficeId,jdbcType=NVARCHAR},
+      equip_operator = #{record.equipOperator,jdbcType=NVARCHAR},
+      equip_opt_startdate = #{record.equipOptStartdate,jdbcType=INTEGER},
+      equip_opt_enddate = #{record.equipOptEnddate,jdbcType=INTEGER},
+      extend1 = #{record.extend1,jdbcType=NVARCHAR},
+      extend2 = #{record.extend2,jdbcType=NVARCHAR},
+      extend3 = #{record.extend3,jdbcType=NVARCHAR},
+      extend4 = #{record.extend4,jdbcType=NVARCHAR},
+      extend5 = #{record.extend5,jdbcType=NVARCHAR},
+      extend6 = #{record.extend6,jdbcType=NVARCHAR},
+      extend7 = #{record.extend7,jdbcType=NVARCHAR},
+      extend8 = #{record.extend8,jdbcType=NVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.rafael.modules.alg.entity.AlgEquip">
+    update dbo.alg_equip
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=NVARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="barcode != null">
+        barcode = #{barcode,jdbcType=NVARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=NVARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=NVARCHAR},
+      </if>
+      <if test="posx != null">
+        posx = #{posx,jdbcType=INTEGER},
+      </if>
+      <if test="posy != null">
+        posy = #{posy,jdbcType=INTEGER},
+      </if>
+      <if test="posRegion != null">
+        pos_region = #{posRegion,jdbcType=NVARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=NVARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="algEquipOfficeId != null">
+        alg_equip_office_id = #{algEquipOfficeId,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipOperator != null">
+        equip_operator = #{equipOperator,jdbcType=NVARCHAR},
+      </if>
+      <if test="equipOptStartdate != null">
+        equip_opt_startdate = #{equipOptStartdate,jdbcType=INTEGER},
+      </if>
+      <if test="equipOptEnddate != null">
+        equip_opt_enddate = #{equipOptEnddate,jdbcType=INTEGER},
+      </if>
+      <if test="extend1 != null">
+        extend1 = #{extend1,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend2 != null">
+        extend2 = #{extend2,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend3 != null">
+        extend3 = #{extend3,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend4 != null">
+        extend4 = #{extend4,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend5 != null">
+        extend5 = #{extend5,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend6 != null">
+        extend6 = #{extend6,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend7 != null">
+        extend7 = #{extend7,jdbcType=NVARCHAR},
+      </if>
+      <if test="extend8 != null">
+        extend8 = #{extend8,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=NVARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.rafael.modules.alg.entity.AlgEquip">
+    update dbo.alg_equip
+    set code = #{code,jdbcType=NVARCHAR},
+      name = #{name,jdbcType=NVARCHAR},
+      barcode = #{barcode,jdbcType=NVARCHAR},
+      image = #{image,jdbcType=NVARCHAR},
+      type = #{type,jdbcType=NVARCHAR},
+      posx = #{posx,jdbcType=INTEGER},
+      posy = #{posy,jdbcType=INTEGER},
+      pos_region = #{posRegion,jdbcType=NVARCHAR},
+      create_by = #{createBy,jdbcType=NVARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=NVARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      alg_equip_office_id = #{algEquipOfficeId,jdbcType=NVARCHAR},
+      equip_operator = #{equipOperator,jdbcType=NVARCHAR},
+      equip_opt_startdate = #{equipOptStartdate,jdbcType=INTEGER},
+      equip_opt_enddate = #{equipOptEnddate,jdbcType=INTEGER},
+      extend1 = #{extend1,jdbcType=NVARCHAR},
+      extend2 = #{extend2,jdbcType=NVARCHAR},
+      extend3 = #{extend3,jdbcType=NVARCHAR},
+      extend4 = #{extend4,jdbcType=NVARCHAR},
+      extend5 = #{extend5,jdbcType=NVARCHAR},
+      extend6 = #{extend6,jdbcType=NVARCHAR},
+      extend7 = #{extend7,jdbcType=NVARCHAR},
+      extend8 = #{extend8,jdbcType=NVARCHAR}
+    where id = #{id,jdbcType=NVARCHAR}
+  </update>
+</mapper>

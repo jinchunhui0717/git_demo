@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.alg.dao.AlgEquipOfficeDao">
+    <sql id="regionwhere">
+        <where>
+		    <if test="name !=null and name !=''">
+  		        and name like '%'+#{name}+'%'
+  		    </if>
+  		    <if test="alg_equip_region_name !=null and alg_equip_region_name !=''">
+  		        and alg_equip_region_name = #{alg_equip_region_name}
+  		    </if>
+		</where>
+    </sql>
+	<select id="selectWithRegion" parameterType="map" 
+		resultType="map">
+		select * from (select aeo.*,aer.name alg_equip_region_name
+		from alg_equip_office aeo left join alg_equip_region aer on
+		aeo.alg_equip_region_id = aer.id) tmp
+		<include refid="regionwhere"></include>
+		<choose>
+            <when test="sort !=null and sort != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by alg_equip_region_name asc,name asc
+            </otherwise>
+        </choose>
+		
+	</select>
+</mapper>

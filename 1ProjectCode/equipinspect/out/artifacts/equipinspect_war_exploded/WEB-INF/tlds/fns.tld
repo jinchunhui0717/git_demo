@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+  version="2.0">
+    
+  <description>JSTL 1.1 functions library</description>
+  <display-name>JSTL functions sys</display-name>
+  <tlib-version>1.1</tlib-version>
+  <short-name>fns</short-name>
+  <uri>http://java.sun.com/jsp/jstl/functionss</uri>
+
+  
+  <!-- UserUtils -->
+  <function>
+    <description>获取当前用户的菜单对象列表</description>
+    <name>getMenuList</name>
+    <function-class>org.rafael.modules.util.business.UserUtil</function-class>
+    <function-signature>java.util.List getMenuList()</function-signature>
+    <example>${fns:getMenuList()}</example>  
+  </function>
+  
+  <function>
+    <description>获取当前用户所在页导航</description>
+    <name>getCurNavigation</name>
+    <function-class>org.rafael.modules.util.business.UserUtil</function-class>
+    <function-signature>java.util.List getCurNavigation()</function-signature>
+    <example>${fns:getCurNavigation()}</example>  
+  </function>
+  
+  <function>
+    <description>获取当前用户信息</description>
+    <name>getSysUser</name>
+    <function-class>org.rafael.modules.util.business.UserUtil</function-class>
+    <function-signature>org.rafael.modules.sys.entity.SysUser getSysUser()</function-signature>
+    <example>${fns:getSysUser()}</example>  
+  </function>
+  
+  <function>
+    <description>判断请求是否来自手机</description>
+    <name>isMobileDevice</name>
+    <function-class>org.rafael.modules.util.business.UserUtil</function-class>
+    <function-signature>boolean isMobileDevice()</function-signature>
+    <example>${fns:isMobileDevice()}</example>  
+  </function>
+	
+  
+  
+</taglib>

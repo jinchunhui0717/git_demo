@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.sys.dao.SysUserDao">
+    <sql id="whereUserAndRole">
+        <where>
+	    	and login_name != 'sysadmin'
+	    <if test="id !=null and id != ''">
+  			and id = #{id}
+  		</if> 
+  		<if test="login_name != null and login_name != ''">
+	  		and login_name like '%'+#{login_name}+'%'
+	  	</if>
+	  	<if test="name != null and name != ''">
+	  		and name like '%'+#{name}+'%'
+	  	</if>
+	  	<if test="role_name != null and role_name != ''">
+	  		and role_name like '%' + #{role_name} + '%'
+	  	</if>
+	  	<if test="role_id != null and role_id != ''">
+	  		and role_id = #{role_id}
+	  	</if>
+	  	<if test="login_locked != null and login_locked != ''">
+	  		and login_locked = #{login_locked}
+	  	</if>
+	</where></sql>
+  <select id="selectUserAndRole" parameterType="map" resultType="map">
+  	select * from (select su.*,sr.id role_id,sr.name role_name,sr.enname role_ename,sr.indexurl from sys_user su 
+left join sys_user_role sur on su.id=sur.user_id
+left join sys_role sr on sur.role_id=sr.id) tmp
+	<include refid="whereUserAndRole"></include>
+	<choose>
+            <when test="sort !=null and sort != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by role_name,name
+            </otherwise>
+        </choose>
+  </select>
+</mapper>

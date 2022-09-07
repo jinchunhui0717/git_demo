@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="GBK">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kks</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrapStyle/bootstrapStyle.css">
+    <link rel="stylesheet" type="text/css" href="../../EmptyProject/bootstrap/css/bootstrap.css">
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.exedit.js"></script>
+    <script type="text/javascript" src="../../EmptyProject/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        var setting = {
+            check: {
+                enable: false,
+                chkStyle: "checkbox"
+            },
+            view: {
+                showLine: true
+            },
+            data: {
+                simpleData: {
+                    enable: true,//如果使用简单节点，需要开启这个
+                    idKey: "id",
+                    pIdKey: "pId",
+                    rootPId: 0
+                }
+            },
+            edit: {
+                enable: true,
+                showRenameBtn: true
+            },
+            callback:{
+                beforeEditName: zTreeBeforeEditName
+            }
+        };
+        function zTreeBeforeEditName(treeId, treeNode) {
+            console.log(treeNode);
+            $('#txtKks').val(treeNode.id);
+            $('#txtMatnr').val("100107170");
+            $('#txtMaktx').val("一号发电机定子");
+            return false;
+        }
+        var simplenodes = [
+            {id: "10", pId: 0, name: "1号机组【10】", open: true},
+            {id: "10B", pId: "10", name: "电力输出和厂用电供应【10B】"},
+            {id: "10C", pId: "10", name: "仪表和控制系统【10C】"},
+            {id: "10E", pId: "10", name: "燃料供应和废渣处理【10E】"},
+            {id: "10M", pId: "10", name: "主机装置【10M】", open: true},
+            {id: "10MA", pId: "10M", name: "汽轮机装置【10MA】"},
+            {id: "10MK", pId: "10M", name: "发电机装置【10MK】", open: true},
+            {id: "10MKA", pId: "10MK", name: "发电机本体【10MKA】", open: true},
+            {id: "10MKA10", pId: "10MKA", name: "一号发电机【10MKA】", open: true},
+            {id: "10MKA10 AG001", pId: "10MKA10", name: "一号发电机本体【10MKA10 AG001】", open: true},
+            {id: "10MKA10 AG001 KA01", pId: "10MKA10 AG001", name: "一号发电机定子【10MKA10 AG001 KA01】"},
+            {id: "10MKA10 AG001 KA05", pId: "10MKA10 AG001", name: "一号发电机机座【10MKA10 AG001 KA05】"},
+            {id: "10MKA10 AG001 KA10", pId: "10MKA10 AG001", name: "一号发电机转子【10MKA10 AG001 KA10】"},
+            {id: "10MKW", pId: "10MK", name: "密封油系统【10MKW】"},
+            {id: "10P", pId: "10", name: "冷却水系统【10P】"},
+            {id: "20", pId: 0, name: "2号机组【20】",isParent:true },
+            {id: "J0", pId: 0, name: "1、2号机组公用系统【J0】",isParent:true },
+            {id: "Y0", pId: 0, name: "全厂公用系统【Y0】",isParent:true }
+        ];
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, simplenodes);
+        });
+
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-sm-6">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="txtKks">KKS</label>
+                    <div class="controls">
+                        <input id="txtKks" class="form-control" type="text" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="txtMatnr">物料编码</label>
+                    <div class="controls">
+                        <input id="txtMatnr" class="form-control" type="text" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="txtMaktx">物料描述</label>
+                    <div class="controls">
+                        <input id="txtMaktx" class="form-control" type="text" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-default">更换</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

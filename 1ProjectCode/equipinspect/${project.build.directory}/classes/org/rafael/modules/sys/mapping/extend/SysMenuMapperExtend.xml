@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.sys.dao.SysMenuDao">
+  <select id="selectBySysUser" parameterType="org.rafael.modules.sys.entity.SysUser" resultMap="BaseResultMap">
+  	SELECT sm.* FROM sys_menu sm 
+join sys_role_menu srm on sm.id=srm.menu_id
+join sys_role sr on srm.role_id = sr.id
+join sys_user_role sur on sr.id = sur.role_id
+join sys_user su on sur.user_id = su.id and su.login_name=#{loginName} order by sm.sort
+  </select>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- 引入配置文件 -->
+	<!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用${propertyKey}的方式来引用配置项 resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties 
+		url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties. 注意，两个属性只能选址一个; 
+		另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用 -->
+	<properties resource="jdbc.properties" />
+	<!-- 指定数据连接驱动jar地址 -->
+	<classPathEntry
+		location="D:\RafaelConfig\MavenRepository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar" />
+	<!-- 一个数据库一个context -->
+	<!-- context:生成一组对象的环境 id:必选，上下文id，用于在生成错误时提示 defaultModelType:指定生成对象的样式 
+		1，conditional：类似hierarchical； 2，flat：所有内容（主键，blob）等全部生成在一个对象中； 3，hierarchical：主键生成一个XXKey对象(key 
+		class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class) targetRuntime: 1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample； 
+		2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample； introspectedColumnImpl：类全限定名，用于扩展MBG -->
+	<context id="context_sys" targetRuntime="MyBatis3">
+
+		<!-- 生成的Java文件的编码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		<!-- 格式化java代码 -->
+		<property name="javaFormatter"
+			value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+		<!-- 格式化XML代码 -->
+		<property name="xmlFormatter"
+			value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+		<plugin type="org.mybatis.generator.plugins.ServicePlugin">
+			<property name="targetPackage" value="org.rafael.modules.sys.service" />
+			<property name="targetProject" value="equipinspect" />
+			<property name="rootServiceInterface" value="org.rafael.modules.util.mvcbase.BaseService" />
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.ServiceImplPlugin">
+			<property name="targetPackage" value="org.rafael.modules.sys.service.impl" />
+			<property name="servicePackage" value="org.rafael.modules.sys.service" />
+			<property name="targetProject" value="equipinspect" />
+			<property name="rootServiceInterface" value="org.rafael.modules.util.mvcbase.BaseServiceImpl" />
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.BaseMapperGeneratorPlugin" />
+		<!-- 生成mysql分页 -->
+		<plugin type="org.mybatis.generator.plugins.MysqlPaginationPlugin" />
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" /><!-- 是否取消注释 -->
+			<property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="${jdbc_driver}"
+			connectionURL="${jdbc_url}" userId="${jdbc_user}" password="${jdbc_password}" />
+		<javaModelGenerator targetPackage="org.rafael.modules.sys.entity"
+			targetProject="equipinspect">
+			<!--entity都集成到dataentity,然后父类有的字段，子类就不会再生成了 -->
+			<!--<property name="rootClass" value="org.rafael.common.base.DataEntity" />-->
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="org.rafael.modules.sys.mapping"
+			targetProject="equipinspect" />
+		<javaClientGenerator targetPackage="org.rafael.modules.sys.dao"
+			targetProject="equipinspect" type="XMLMAPPER" />
+
+
+		<!-- 通配符表示生成ssm下面所有的表,只有一个%表示生成所有表，sys_a%表示生成以sys_a开头的表,%menu表示生成以menu结尾的表 -->
+		<table schema="equipinspect" tableName="no_sys_role">
+
+		</table>
+	</context>
+	
+	<context id="context_alg" targetRuntime="MyBatis3">
+
+		<!-- 生成的Java文件的编码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		<!-- 格式化java代码 -->
+		<property name="javaFormatter"
+			value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+		<!-- 格式化XML代码 -->
+		<property name="xmlFormatter"
+			value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+		<plugin type="org.mybatis.generator.plugins.ServicePlugin">
+			<property name="targetPackage" value="org.rafael.modules.alg.service" />
+			<property name="targetProject" value="equipinspect" />
+			<property name="rootServiceInterface" value="org.rafael.modules.util.mvcbase.BaseService" />
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.ServiceImplPlugin">
+			<property name="targetPackage" value="org.rafael.modules.alg.service.impl" />
+			<property name="servicePackage" value="org.rafael.modules.alg.service" />
+			<property name="targetProject" value="equipinspect" />
+			<property name="rootServiceInterface" value="org.rafael.modules.util.mvcbase.BaseServiceImpl" />
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.BaseMapperGeneratorPlugin" />
+		<!-- 生成mysql分页 -->
+		<plugin type="org.mybatis.generator.plugins.MysqlPaginationPlugin" />
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" /><!-- 是否取消注释 -->
+			<property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="${jdbc_driver}"
+			connectionURL="${jdbc_url}" userId="${jdbc_user}" password="${jdbc_password}" />
+		<javaModelGenerator targetPackage="org.rafael.modules.alg.entity"
+			targetProject="equipinspect">
+			<!--entity都集成到dataentity,然后父类有的字段，子类就不会再生成了 -->
+			<!--<property name="rootClass" value="org.rafael.common.base.DataEntity" />-->
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="org.rafael.modules.alg.mapping"
+			targetProject="equipinspect" />
+		<javaClientGenerator targetPackage="org.rafael.modules.alg.dao"
+			targetProject="equipinspect" type="XMLMAPPER" />
+
+
+		<!-- 通配符表示生成ssm下面所有的表,只有一个%表示生成所有表，sys_a%表示生成以sys_a开头的表,%menu表示生成以menu结尾的表 -->
+		<table schema="equipinspect" tableName="no_alg_task_detail">
+
+		</table>
+	</context>
+</generatorConfiguration>

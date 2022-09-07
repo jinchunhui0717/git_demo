@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+      ">
+
+	<!-- 配置自动扫描的包 -->
+	<context:component-scan base-package="org.rafael.modules" />
+	
+	<!-- 配置基于注解的声明式事务 -->
+	<!-- enables scanning for @Transactional annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+	<!-- 不处理静态资源 -->
+	<mvc:default-servlet-handler />
+
+	<!-- mvc注解 -->
+	<mvc:annotation-driven>
+		<!-- 处理responseBody 里面日期类型 -->
+		<mvc:message-converters>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+							</bean>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!--shiro注解开启-扫描controller下的shiro注解 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<!-- shiro为集成springMvc 拦截异常，使用注解时无权限的跳转 -->
+	<!-- <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
+		<property name="exceptionMappings"> <props> <prop key="org.apache.shiro.authz.UnauthorizedException">redirect:/unauthorized</prop> 
+		<prop key="org.apache.shiro.authz.UnauthenticatedException">redirect:/unauthorized</prop> 
+		<prop key="java.lang.IllegalArgumentException">error/400</prop> <prop key="java.lang.Exception">error/500</prop> 
+		</props> </property> </bean> -->
+
+
+	<!-- 国际化资源文件 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="defaultEncoding" value="UTF-8" />  
+        <property name="useCodeAsDefaultMessage" value="true" />  
+        <property name="cacheSeconds" value="10"></property>  
+        <property name="basenames">  
+            <list>  
+                <value>classpath:message</value>  
+            </list>  
+        </property>   
+	</bean>
+	<mvc:interceptors>
+		<!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
+
+	<!-- 浏览器自适应语言方式（cookie方式） -->
+	<bean id="localeResolver" 
+	    class="org.springframework.web.servlet.i18n.CookieLocaleResolver" 
+		/>
+
+	<!-- 需要在界面上进行切换（session方式） -->
+	<!-- <bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"> 
+		<property name="defaultLocale" value="en_US" /> 
+	</bean>-->
+</beans>

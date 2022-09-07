@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.alg.dao.AlgTaskDetailDao">
+  <insert id="insertBatch" parameterType="org.rafael.modules.alg.entity.AlgTaskDetail">
+    insert into alg_task_detail (id, task_id, equip_id, 
+      equip_state, operator, create_by, 
+       update_by, 
+      opt_startdate, opt_enddate)
+    values 
+    <foreach collection="list" item="item" separator=",">
+    (#{item.id,jdbcType=VARCHAR}, #{item.taskId,jdbcType=VARCHAR}, #{item.equipId,jdbcType=VARCHAR}, 
+      #{item.equipState,jdbcType=CHAR}, #{item.operator,jdbcType=VARCHAR}, #{item.createBy,jdbcType=VARCHAR}, 
+       #{item.updateBy,jdbcType=VARCHAR},  
+      #{item.optStartdate,jdbcType=DATE}, #{item.optEnddate,jdbcType=DATE})
+    </foreach>
+  </insert>
+</mapper>

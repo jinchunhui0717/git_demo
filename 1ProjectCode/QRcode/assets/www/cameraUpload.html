@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PhoneGap Upload</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="format-detection" content="telephone=no" />
+        <style>
+            
+            .button-block {
+                    margin-bottom: 0;
+                    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .4), 0 1px rgba(255, 255, 255, .8);
+                  display: block;
+                  padding: 11px 0 13px;
+                  margin-bottom: 10px;
+                  font-size: 16px;
+                
+            }
+            
+            .button-main{
+                color: #fff;
+                  text-shadow: 0 -1px 0 rgba(0, 0, 0, .3);
+                background-color: #1eafe7;
+                background-image: -webkit-linear-gradient(top, #1eafe7 0, #1a97c8 100%);
+                background-image: linear-gradient(to bottom, #1eafe7 0, #1a97c8 100%);
+                border: 1px solid #117aaa;
+                font-weight: bold;
+                line-height: 18px;
+                text-align: center;
+                vertical-align: top;
+                cursor: pointer;
+                border-radius: 3px;
+                box-shadow: inset 0 1px 1px rgba(255, 255, 255, .4), 0 1px 2px rgba(0, 0, 0, .05);
+                -webkit-transition: background .3s linear;
+
+            }
+            .dlist {
+	padding: 0px;
+	margin: 1em;
+	background: #fff;
+	border: 1px solid #ddd;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+.ditem-empty {
+	overflow: hidden;
+	list-style-type: none;
+	font-size: 1em;
+	padding: 1em;
+	vertical-align: middle;
+}
+.ditem {
+	overflow: hidden;
+	list-style-type: none;
+	font-size: 1em;
+	padding: 1em;
+	border-bottom: inset 1px #ebebeb;
+	vertical-align: middle;
+}
+.ditem:active {
+	background: #f4f4f4;
+}
+.ditem:last-child {
+	border-bottom: inset 0px #ebebeb;
+}
+.aname {
+	font-size: 16px;
+}
+.ainf {
+	font-size: 12px;
+}
+.iplay {
+	display: block;
+	-ms-touch-action: auto;
+}
+.imgrpf{
+	width:192px;
+	height:108px;
+}
+            
+        </style>
+    </head>
+    <body>
+        <div class="button-block button-main" id='camera'>拍照</div>
+        <div class="button-block button-main" id='upload'>上传</div>
+        <div class="button-block button-main" id='clean'>删除</div>
+        <br/>
+        <ul id="history" class="dlist" style="text-align:left;">
+				<li id="empty" class="ditem-empty">无历史记录</li>
+	    </ul>
+        <script  src="js/cordova.js"></script>
+        <script  src="js/zepto.min.js"></script>
+        <script  src="js/when.js"></script>
+        <script  src="js/upload_pic.js"></script>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.alg.dao.AlgEquipTypeInspectDao">
+    <sql id="whereWithType">
+        
+         <where>
+          <if test="id !=null and id != '' ">
+              and id = #{id}
+          </if>
+          <if test="alg_equip_type_id !=null and alg_equip_type_id != '' ">
+              and  alg_equip_type_id = #{alg_equip_type_id}
+          </if>
+          <if test="name !=null and name != '' ">
+              and  name like '%'+#{name}+'%'
+          </if>
+          <if test="equip_type_name !=null and equip_type_name != '' ">
+              and  equip_type_name = #{equip_type_name}
+          </if>
+      </where>
+    </sql>
+  <select id="selectWithType" parameterType="map" resultType="map">
+      select * from (
+		select aeti.*,aet.name equip_type_name,aet.ename equip_type_ename 
+      from alg_equip_type_inspect aeti 
+      left join alg_equip_type aet on aeti.alg_equip_type_id = aet.id) tmp
+     <include refid="whereWithType"></include>
+      <choose>
+            <when test="sort !=null and sort != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by equip_type_name,name
+            </otherwise>
+        </choose>
+  </select>
+  
+</mapper>

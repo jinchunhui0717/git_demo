@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+">
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc_driver}"></property>
+		<property name="jdbcUrl" value="${jdbc_url}"></property>
+		<property name="user" value="${jdbc_user}"></property>
+		<property name="password" value="${jdbc_password}"></property>
+		<!--初始化时获取连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3-->
+		<property name="initialPoolSize" value="3"/>
+		<!--最大空闲时间，多少秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0-->
+		<property name="maxIdleTime" value="1800"/>
+		<!--连接池中保留的最小连接数，默认为：3-->
+		<property name="minPoolSize" value = "3" />
+		<!--接池中保留的最大连接数。默认值: 15-->
+		<property name="maxPoolSize" value="1000" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3-->
+		<property name="acquireIncrement" value="3" />
+		<!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false-->
+		<property name="testConnectionOnCheckin" value="true" />
+		<!--每隔多少秒检查所有连接池中的空闲连接。Default: 0-->
+		<property name="idleConnectionTestPeriod" value="300" />
+	</bean>
+
+
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 **表示迭代查找 -->
+		<property name="mapperLocations" value="classpath:org/rafael/modules/**/*.xml"></property>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		<!-- 支持多数据库切换 -->
+		<property name="databaseIdProvider">
+			<bean class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+				<property name="properties">
+					<props>
+						<prop key="MySQL">mysql</prop>
+						<prop key="Oracle">oracle</prop>
+						<prop key="SQL Server">sqlserver</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 ,自动扫描了所有的XxxxMapper.xml对应的mapper接口文件,只要Mapper接口类和Mapper映射文件对应起来就可以了 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 不支持 **表示迭代查找 通过逗号 实现多个路径 -->
+		<property name="basePackage"
+			value="org.rafael.modules.sys.dao,org.rafael.modules.alg.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!--======= 事务配置 End =================== -->
+	
+
+
+</beans>

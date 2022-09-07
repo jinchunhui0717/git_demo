@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title><sitemesh:title /></title>
+<!-- ie渲染模式兼容性 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<!-- 缩放的相关设置 -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet"
+	href="static/bootstrap/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="static/font-awesome-4.7.0/css/font-awesome.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="static/dist/css/AdminLTE.min.css">
+<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect.
+    -->
+<link rel="stylesheet"
+	href="static/dist/css/skins/skin-blue.min.css">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="static/plugins/html5shiv/html5shiv.min.js"></script>
+    <script src="static/plugins/respond/respond.min.js"></script>
+    <![endif]-->
+<script src="static/plugins/jquery1.12.4/jquery.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="static/bootstrap/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="static/dist/js/app.min.js"></script>
+<script src="static/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="static/plugins/layer-v3.1.1/src/layer.js"></script>
+<link rel="stylesheet"
+	href="static/plugins/bootstrap-table/css/bootstrap-table.min.css">
+<link rel="stylesheet"
+	href="static/plugins/bootstrap3-editable/css/bootstrap-editable.css">
+<script>
+var fuwuqiurl = 'http://47.94.141.21:8080/equipinspect';
+	//初始化bootstrap-table的内容
+	function InitMainTable() {
+		//记录页面bootstrap-table全局变量$table，方便应用
+		var queryUrl = fuwuqiurl+'/alg/equip/inspectdata';
+		$('#tbContent')
+				.bootstrapTable(
+						{
+							sidePagination : "server", //分页方式：client客户端分页，server服务端分页（*）
+							formatLoadingMessage : function() {
+								return '';
+							},
+							url : queryUrl, //请求后台的URL（*）
+							cardView : true,
+							striped : true,
+							undefinedText : "",//字段是空的时候 默认显示 "-"  ,现在修改为""
+							silent : true,
+							toolbar : '#toolbar',
+							toolbarAlign : 'right', // 工具栏对齐方式
+							dataType : "json", // 数据类型
+							method : 'GET', //请求方式（*）
+							cache : false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+							pagination : true, //是否显示分页（*）
+							sortable : true,
+							sortStable : true,
+							pageNumber : 1, //初始化加载第一页，默认第一页,并记录
+							pageSize : 10,
+							pageList : [ 10, 25, 50, 100 ],
+							//得到查询的参数-提交到服务器端的参数
+							queryParams : function(params) {
+								//这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+								var temp = {
+										limit : params.limit, //页面大小
+										offset : params.offset,
+										operator:operator
+								//页码
+								};
+								return temp;
+							},
+							uniqueId : "id",
+							columns : [
+									 {
+										field : 'code',
+										title : '设备编号',
+										align : 'center',
+										valign : 'middle'
+									}, {
+										field : 'barcode',
+										title : '条码',
+										align : 'center',
+										valign : 'middle'
+									}, {
+										field : 'equip_type_name',
+										title : '类型',
+										align : 'center',
+										//sortable : true,
+										valign : 'middle'
+									}, {
+										
+										title : '位置',
+										align : 'center',
+										
+										valign : 'middle',
+										formatter:function(value,row,index){
+											return row.region_name+' '+row.office_name;
+										}
+									}, {
+										field : 'user_name',
+										title : '指派人',
+										align : 'center',
+										valign : 'middle'
+									}, {
+										field : 'opt_startdate',
+										title : '开始日期',
+										align : 'center',
+										valign : 'middle'
+									}, {
+										field : 'opt_enddate',
+										title : '结束日期',
+										align : 'center',
+										valign : 'middle'
+									}  , {
+										title : '操作',
+										align : 'center',
+										valign : 'middle',
+										formatter : actionFormatter
+									}, {
+										align : 'center',
+										valign : 'middle',
+										field : 'imageurl',
+										title : '图片',
+										formatter : imgFormatter
+									}],
+									responseHandler:function(res){
+										alert(JSON.stringify(res));
+									}
+
+							
+						});
+	}
+	//操作栏的格式化
+	function actionFormatter(value, row, index) {
+		var result = '<a class="btn btn-app camera" data-id="'+row.id+ '" data-taskdetailid="'+row.task_detail_id+'"> <i class="fa fa-camera"></i>拍照</a>'+
+		'<a class="btn btn-app scanner"  data-id="'+row.id+ '" data-type="'+row.type+'" data-taskdetailid="'+row.task_detail_id+'" data-barcode="'+row.barcode+'"> <i class="fa fa-barcode"></i>扫码</a>';
+		return result;
+	}
+	
+	//操作栏的格式化
+	function imgFormatter(value, row, index) {
+		if (row.equip_state==''||row.equip_state==undefined) {
+			result = '<img  width="60" height="60" src="'+fuwuqiurl+'static/img/noimg.png"></img>';
+		}else{
+			result = '<a href="javascript:bigimgfunc(\''+fuwuqiurl+'static/../upload/'+row.imageurl+'\')"><img class="photoimg" src="static/../upload/thumb/'+row.imageurl+'"></img></a>';
+		}
+		
+		return result;
+	}
+
+	$(function() {
+		InitMainTable();
+	});
+	
+	function bigimgfunc(url){
+		$('#bigimage').attr('src','');
+		$('#bigimage').attr('src',url);
+		var layer_msg_id;
+		layer.open({
+            type:1,
+            title:'原图',
+            offset: '50px',
+            area:['100%','90%'],
+            content:$('#bigimage'),
+          	success:function(){
+          		layer_msg_id = layer.msg('正在加载图片...', {
+        			icon : -1,
+        			shade : 0,
+        			area : [ '150px', '50px' ],//固定大小，解决大小忽闪的问题
+        			time : false
+        		//取消自动关闭（默认2秒自动关闭）
+        		});
+          	}
+        })
+		$('#bigimage').load(function(){
+			layer.close(layer_msg_id);
+		})
+        
+    }
+</script>
+</head>
+<body>
+	<div class="box">
+		<div class="box-body">
+			<table id="tbContent"></table>
+		</div>
+	</div>
+	<img id="bigimage" style="display: none" width="100%" src="" />
+	<img alt="" style="display:none" id="displayImg" src="" />
+	<script src="static/android/cordova.js"></script>
+	<script src="static/android/upload_pic.js"></script>
+	<script src="static/android/barcodescanner.js"></script>
+	<script type="text/javascript">
+	document.addEventListener("deviceready", onDeviceReady, false); 
+	function onDeviceReady() {        // Register the event listener        
+		$(document).on('click','.camera',function() {
+			var layer_msg_id;
+			var id = $(this).data('id');
+			var params = new Object();
+		    params.taskDetailId =$(this).data('taskdetailid');
+			takePicture(fuwuqiurl+'/file/upload',function() {
+										layer_msg_id = layer.msg(
+																'正在上传图片...',
+														{
+															icon : -1,
+															shade : 0,
+															area : [ '150px',
+																	'50px' ],//固定大小，解决大小忽闪的问题 
+															time : false
+														//取消自动关闭（默认2秒自动关闭）
+														});
+										return params;
+										
+									}, function(result) {
+										var la='#layui-layer'+layer_msg_id+' > .layui-layer-content';
+										$(la).html('上传完成');
+										setTimeout(function(){ layer.close(layer_msg_id); },300);
+										//alert(result.responseCode);//200
+										//alert(result.response);//服务器返回的内容
+										//alert(result.bytesSent);//文件大小
+										var tmp = $.parseJSON(result.response);
+										updateTable(id,tmp.extend);
+										
+									}, function() {
+										layer.msg('上传失败,请重新拍照');
+									});
+						});
+		$(document).on('click','.scanner',function() {
+			var row = $('#tbContent').bootstrapTable('getRowByUniqueId',$(this).data('id'));
+			//alert(JSON.stringify(row));
+			if (row.equip_state==''||row.equip_state==undefined) {
+				layer.msg('请先拍照');
+				return false;
+			}
+			var code = $(this).data('barcode');
+			var taskdetailid = $(this).data('taskdetailid');
+			var type = $(this).data('type');
+			window.plugins.barcodeScanner.scan(function(result) {
+				if (result.cancelled==true) {
+					return false;
+				}
+				if (result.text==code) {
+					layer.open({
+						type:2,
+						offset: '50px',
+						area: ['auto', '80%'],
+						content:fuwuqiurl+'/alg/equiptype/scanner?algequiptypeid='+type+'&taskdetailid='+taskdetailid,					
+					});
+						  
+				} else {
+					layer.msg('设备编码不符，请重新扫码');
+				}
+				
+			}, function(error) {
+
+			});
+		});
+		function updateTable(id,imageurl) {
+			$('#tbContent').bootstrapTable('updateByUniqueId', {
+				id : id,
+				row : {
+					equip_state : 'o',
+					imageurl:imageurl
+				}
+			});
+		}
+	} 
+	</script>
+	<script
+		src="static/plugins/bootstrap-table/js/bootstrap-table.min.js"></script>
+	<script
+		src="static/plugins/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
+	<script
+		src="static/plugins/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js"></script>
+	<script
+		src="static/plugins/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script
+		src="static/plugins/bootstrap-datepicker/bootstrap-datepicker.zh-CN.min.js"></script>
+	<script src="static/util/DateUtil.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script src="js/cordova.js" type="text/javascript"></script>
+<script src="js/barcodescanner.js" type="text/javascript"></script>
+<script type="text/javascript">
+var scanCode = function() {
+    window.plugins.barcodeScanner.scan(
+        function(result) {
+        alert("Scanned Code: " + result.text 
+                + ". Format: " + result.format
+                + ". Cancelled: " + result.cancelled);
+    }, function(error) {
+        alert("Scan failed: " + error);
+    });
+} 
+var encodeText = function() {
+
+    window.plugins.barcodeScanner.encode(
+            BarcodeScanner.Encode.TEXT_TYPE,
+            "http://www.mobiledevelopersolutions.com",
+            function(success) {
+                alert("Encode success: " + success);
+            }, function(fail) {
+                alert("Encoding failed: " + fail);
+            });
+}
+var encodeEmail = function() {
+
+    window.plugins.barcodeScanner.encode(
+        BarcodeScanner.Encode.EMAIL_TYPE,
+        "a.name@gmail.com", function(success) {
+            alert("Encode success: " + success);
+        }, function(fail) {
+            alert("Encoding failed: " + fail);
+        });
+}
+var encodePhone = function() {
+
+    window.plugins.barcodeScanner.encode(
+        BarcodeScanner.Encode.PHONE_TYPE,
+        "555-227-5283", function(success) {
+            alert("Encode success: " + success);
+        }, function(fail) {
+            alert("Encoding failed: " + fail);
+        });
+}
+var encodeSMS = function() {
+
+    window.plugins.barcodeScanner.encode(
+        BarcodeScanner.Encode.SMS_TYPE,
+        "An important message for someone.", function(success) {
+            alert("Encode success: " + success);
+        }, function(fail) {
+            alert("Encoding failed: " + fail);
+        });
+}
+var cameraUpload = function(){
+	window.location.href="cameraUpload.html";
+}
+</script>
+</head>
+<body>
+hello 二维码！
+<input type="button" onclick="scanCode()" value="扫描"/>
+<input type="button" onclick="encodeText()" value="转换文本"/>
+<input type="button" onclick="encodeEmail()" value="转换邮箱地址"/>
+<input type="button" onclick="cameraUpload()" value="拍照上传"/>
+</body>
+</html>

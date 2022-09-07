@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.alg.dao.AlgEquipDao">
+	<sql id="whereWithAll">
+		<where>
+			<if test="extend5 ==null or extend5 ==''">
+				and extend5 = '1'
+			</if>
+			<if test="id !=null and id !=''">
+				and id = #{id}
+			</if>
+			<if test="equip_state !=null and equip_state !=''">
+				and equip_state = #{equip_state}
+			</if>
+			<if test="pos_region !=null and pos_region !=''">
+				and pos_region = #{pos_region}
+			</if>
+			<if test="operator !=null and operator !=''">
+				and operator = #{operator}
+			</if>
+			<if test="region_name !=null and region_name !=''">
+				and region_name = #{region_name}
+			</if>
+			<if test="office_name !=null and office_name !=''">
+				and office_name like '%'+#{office_name}+'%'
+			</if>
+			<if test="code !=null and code !=''">
+				and code like '%'+#{code}+'%'
+			</if>
+			<if test="barcode !=null and barcode !=''">
+				and barcode like '%'+#{barcode}+'%'
+			</if>
+			<if test="equip_type_name !=null and equip_type_name !=''">
+				and equip_type_name like '%'+#{equip_type_name}+'%'
+			</if>
+			<if test="task_create_date_start !=null and task_create_date_start !=''">
+				<if test="_databaseId=='mysql'">
+					and DATE_FORMAT(task_create_date, '%Y-%m' ) &gt;=
+					#{task_create_date_start}
+				</if>
+				<if test="_databaseId=='sqlserver'">
+					and convert(varchar(7),task_create_date,121) &gt;=
+					#{task_create_date_start}
+				</if>
+			</if>
+			<if test="task_create_date_end !=null and task_create_date_end !=''">
+				<if test="_databaseId=='mysql'">
+					and DATE_FORMAT(task_create_date, '%Y-%m' ) &lt;=
+					#{task_create_date_end}
+				</if>
+				<if test="_databaseId=='sqlserver'">
+					and convert(varchar(7),task_create_date,121) &lt;=
+					#{task_create_date_end}
+				</if>
+
+			</if>
+		</where>
+	</sql>
+	<select id="selectWithAll" parameterType="map" resultType="map">
+		select * from (
+		select ae.*,aet.name equip_type_name,aet.font,aeo.name office_name,aer.name
+		region_name ,tmp.id task_detail_id,tmp.task_id,tmp.operator,su.name
+		user_name,tmp.equip_state,
+		tmp.opt_startdate,tmp.opt_enddate,tmp.imageurl,tmp.opt_date
+		inspectdate,tmp.opt_date,su2.name equip_user_name
+		from alg_equip ae
+		left join alg_equip_type aet on ae.type=aet.id
+		left join alg_equip_office aeo on ae.alg_equip_office_id = aeo.id
+		left join alg_equip_region aer on aeo.alg_equip_region_id = aer.id
+		left join (select * from alg_task_detail where
+		alg_task_detail.task_id=(select top 1 id from alg_task order by
+		create_date desc )) tmp on ae.id=tmp.equip_id
+		left join sys_user su on tmp.operator = su.login_name
+		left join sys_user su2 on ae.equip_operator = su2.login_name
+		) alltmp
+
+		<include refid="whereWithAll"></include>
+		<choose>
+			<when test="sort !=null and sort != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by region_name,office_name,code
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="selectWithTaskDetail" parameterType="map"
+		resultType="map">
+		select * from (
+		select ae.*,aet.name equip_type_name,aet.font,aeo.name office_name,aer.name
+		region_name ,tmp.id task_detail_id,tmp.task_id,tmp.operator,su.name
+		user_name,tmp.equip_state,
+		tmp.opt_startdate,tmp.opt_enddate,tmp.imageurl,tmp.opt_date
+		inspectdate
+		from alg_equip ae
+		left join alg_equip_type aet on ae.type=aet.id
+		left join alg_equip_office aeo on ae.alg_equip_office_id = aeo.id
+		left join alg_equip_region aer on aeo.alg_equip_region_id = aer.id
+		inner join (select * from alg_task_detail where
+		alg_task_detail.task_id=#{task_id}) tmp on ae.id=tmp.equip_id
+		left join sys_user su on tmp.operator = su.login_name
+		) alltmp
+
+		<include refid="whereWithAll"></include>
+		<choose>
+			<when test="sort !=null and sort != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by region_name,office_name,code
+			</otherwise>
+		</choose>
+	</select>
+
+
+
+	<select id="selectWithTaskAll" parameterType="map" resultType="map">
+		select * from (
+		select ae.*,aet.name equip_type_name,aet.font,aeo.name office_name,aer.name
+		region_name ,tmp.id task_detail_id,tmp.task_id,tmp.operator,su.name
+		user_name,tmp.equip_state,
+		tmp.opt_startdate,tmp.opt_enddate,tmp.imageurl,tmp.update_date
+		inspectdate,ata.create_date task_create_date,tmp.opt_date
+		from alg_equip ae
+		left join alg_equip_type aet on ae.type=aet.id
+		left join alg_equip_office aeo on ae.alg_equip_office_id = aeo.id
+		left join alg_equip_region aer on aeo.alg_equip_region_id = aer.id
+		inner join alg_task_detail tmp on ae.id=tmp.equip_id
+		inner join alg_task ata on tmp.task_id= ata.id
+		left join sys_user su on tmp.operator = su.login_name
+		) alltmp
+
+		<include refid="whereWithAll"></include>
+		<choose>
+			<when test="sort !=null and sort != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by task_create_date desc
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

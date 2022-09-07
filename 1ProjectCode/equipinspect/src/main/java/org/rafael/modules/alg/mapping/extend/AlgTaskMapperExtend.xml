@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.rafael.modules.alg.dao.AlgTaskDao">
+  <delete id="delCurMonth">
+      delete FROM alg_task WHERE DATE_FORMAT( create_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+  </delete>
+  <select id="selHegeRate" parameterType="map" resultType="map">
+      select t.*,round(CAST(hege AS FLOAT)/zongshu * 100,0) per from (
+		select tmp.task_id,
+		max(year(tmp.task_date)) task_year,
+		max(month(tmp.task_date)) task_month,
+		sum(case when tmp.equip_state ='g' then 1 else 0 end) hege,
+		count(*) zongshu,
+		pos_region
+		 from(
+		select atk.id task_id,
+		atk.create_date task_date,
+		ae.pos_region, 
+		atd.equip_state
+		 from alg_task atk 
+		inner join alg_task_detail atd on atk.id = atd.task_id
+		left join alg_equip ae on atd.equip_id = ae.id where ae.extend5 = '1' ) tmp
+		 group by tmp.task_id , tmp.pos_region ) t
+	<where>
+	    <if test="task_year !=null and task_year !=''">
+				and t.task_year = #{task_year}
+		</if>
+	</where>
+	 order by t.task_year asc,t.task_month asc,t.pos_region asc
+  </select>
+  <select id="selWanchengRate" parameterType="map" resultType="map">
+      select t.*,round(CAST(wancheng AS FLOAT)/zongshu * 100,0) per from (
+		select tmp.task_id,
+		max(year(tmp.task_date)) task_year,
+		max(month(tmp.task_date)) task_month,
+		sum(case  WHEN tmp.equip_state is not null and tmp.equip_state !='' then 1 else 0 end) wancheng,
+		count(*) zongshu,
+		pos_region
+		 from(
+		select atk.id task_id,
+		atk.create_date task_date,
+		ae.pos_region, 
+		atd.equip_state
+		 from alg_task atk 
+		inner join alg_task_detail atd on atk.id = atd.task_id
+		left join alg_equip ae on atd.equip_id = ae.id
+    where ae.extend5 = '1' ) tmp
+		 group by tmp.task_id , tmp.pos_region ) t
+	<where>
+	    <if test="task_year !=null and task_year !=''">
+				and t.task_year = #{task_year}
+		</if>
+	</where>
+	 order by t.task_year asc,t.task_month asc,t.pos_region asc
+  </select>
+</mapper>

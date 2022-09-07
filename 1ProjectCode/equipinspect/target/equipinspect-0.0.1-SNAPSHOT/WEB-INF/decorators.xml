@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<decorators defaultdir="/WEB-INF/views/layouts/">
+    <!-- 此处用来定义不需要过滤的页面 -->
+    <excludes>
+        <pattern>/static/*</pattern>
+        <!-- *过滤带参数的-->
+        <pattern>/login*</pattern>
+    </excludes>
+
+    <!-- 用来定义装饰器要过滤的页面 -->
+    <decorator name="default" page="default.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+    
+    <decorator name="iframe" page="iframe.jsp">
+        <pattern>/sys/user/listiframe</pattern>
+        <pattern>/sys/user/edit</pattern>
+        <pattern>/sys/user/add</pattern>
+        <pattern>/sys/user/changepwd</pattern>
+        <pattern>/sys/role/edit</pattern>
+        <pattern>/sys/role/add</pattern>
+        <pattern>/alg/equip/edit</pattern>
+        <pattern>/alg/equip/add</pattern>
+        <pattern>/alg/equipregion/edit</pattern>
+        <pattern>/alg/equipregion/add</pattern>
+        <pattern>/alg/equipoffice/edit</pattern>
+        <pattern>/alg/equipoffice/add</pattern>
+        <pattern>/alg/equiptype/edit</pattern>
+        <pattern>/alg/equiptype/add</pattern>
+        <pattern>/alg/equiptype/scanner</pattern>
+        <pattern>/alg/task/taskdetailinspect</pattern>
+        <pattern>/file/uploadview</pattern>
+    </decorator>
+</decorators>
